@@ -4,10 +4,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const Login = (props: Props) => {
+
+  const navigate = useNavigate();
+
   return (
     <div className="flex items-center justify-center min-h-screen px-4">
       <Tabs defaultValue="login" className='min-w-md'>
@@ -30,7 +34,7 @@ const Login = (props: Props) => {
               </div>
             </CardContent>
             <CardFooter className='flex justify-end'>
-              <Button>Login</Button>
+              <Button onClick={()=> navigate('/user')}>Login</Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -54,7 +58,7 @@ const Login = (props: Props) => {
             </CardContent>
             <CardFooter className='flex justify-between'>
               <a href="/forgot-password" className="text-sm underline-offset-4 hover:underline">Forgot your password?</a>
-              <Button>Login</Button>
+              <Button onClick={()=> navigate('/dashboard')}>Login</Button>
             </CardFooter>
           </Card>
         </TabsContent>

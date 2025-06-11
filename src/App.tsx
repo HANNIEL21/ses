@@ -6,6 +6,8 @@ import Login from "./Screens/auth/Login";
 import ForgotPassword from "./Screens/auth/ForgotPassword";
 import ResetPassword from "./Screens/auth/ResetPassword";
 import VerifyEmail from "./Screens/auth/VerifyEmail";
+import User from "./Screens/user/User";
+import Root from "./Screens/dashboard/Root";
 
 function App() {
 
@@ -18,7 +20,12 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/" element={<Welcome />} />
+
+
+          <Route path="/user" element={<User />} />
+
+
+          <Route path="/dashboard" element={<Root />} />
         </Routes>
       </Router>
     </ThemeProvider>
