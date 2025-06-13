@@ -1,8 +1,6 @@
-import React from 'react'
 
-type Props = {}
 
-const VerifyEmail = (props: Props) => {
+const VerifyEmail = () => {
   return (
     <div>VerifyEmail</div>
   )

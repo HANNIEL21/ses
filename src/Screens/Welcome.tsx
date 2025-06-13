@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button"
 import { LogIn } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
-type Props = {}
 
-const Welcome = (props: Props) => {
+const Welcome = () => {
 
     const navigate = useNavigate()
 

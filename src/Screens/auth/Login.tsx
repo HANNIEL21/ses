@@ -3,18 +3,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-type Props = {}
-
-const Login = (props: Props) => {
+const Login = () => {
 
   const navigate = useNavigate();
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4">
-      <Tabs defaultValue="login" className='min-w-md'>
+      <Tabs defaultValue="login">
         <TabsList className='w-full mb-4 px-3'>
           <TabsTrigger value="login">Student Login</TabsTrigger>
           <TabsTrigger value="admin">Admin Login</TabsTrigger>

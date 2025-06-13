@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
 
-const Lecturers = () => {
+const Role = () => {
   return (
     <div>
       <header className="flex h-16 shrink-0 items-center justify-between pr-4 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
@@ -23,7 +23,7 @@ const Lecturers = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Lecturers</BreadcrumbPage>
+                <BreadcrumbPage>Roles</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -34,4 +34,4 @@ const Lecturers = () => {
   )
 }
 
-export default Lecturers
+export default Role

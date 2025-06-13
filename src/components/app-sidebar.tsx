@@ -1,20 +1,15 @@
-import * as React from "react"
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
   ChartArea,
   Command,
-  Frame,
   GalleryVerticalEnd,
   LayoutGrid,
-  Map,
   MonitorCog,
   PieChart,
-  Settings2,
   User,
-  Users,
+  Users
 } from "lucide-react"
+import * as React from "react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"

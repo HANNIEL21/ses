@@ -8,17 +8,17 @@ import ResetPassword from "./Screens/auth/ResetPassword";
 import VerifyEmail from "./Screens/auth/VerifyEmail";
 import User from "./Screens/user/User";
 import Root from "./Screens/dashboard/Root";
-import Overview from "./Screens/dashboard/Overview";
-import Visitor from "./Screens/dashboard/Visitor";
+import Overview from "./Screens/dashboard/overview/Overview";
+import Visitor from "./Screens/dashboard/visitors/Visitor";
 import Appraisals from "./Screens/dashboard/appraisals/Appraisals";
 import Admins from "./Screens/dashboard/admins/Admins";
-import Lecturers from "./Screens/dashboard/Lecturers/Lecturers";
+import Lecturers from "./Screens/dashboard/lecturers/Lecturers";
 import Analysis from "./Screens/dashboard/analysis/Analysis";
-import Report from "./Screens/dashboard/Report";
+import Report from "./Screens/dashboard/reports/Report";
 import Appraisal from "./Screens/dashboard/appraisal/Appraisal";
 import Faculties from "./Screens/dashboard/faculties/Faculties";
 import Departments from "./Screens/dashboard/departments/Departments";
-import Role from "./Screens/dashboard/Role";
+import Role from "./Screens/dashboard/role/Role";
 import Previlage from "./Screens/dashboard/previlage/Previlage";
 
 function App() {

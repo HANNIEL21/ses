@@ -11,9 +11,8 @@ import {
 
 import { useTheme } from "@/components/theme-provider"
 
-type Props = {}
 
-const Mood = (props: Props) => {
+const Mood = () => {
     const { setTheme } = useTheme();
     return (
         <DropdownMenu>
