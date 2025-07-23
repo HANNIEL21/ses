@@ -99,10 +99,6 @@ const data = {
           title: "Roles",
           url: "/dashboard/roles",
         },
-        {
-          title: "Previlage",
-          url: "/dashboard/previlage",
-        },
       ],
     },
   ],

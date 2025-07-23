@@ -11,7 +11,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4">
-      <Tabs defaultValue="login">
+      <Tabs defaultValue="login" className='w-full max-w-md'>
         <TabsList className='w-full mb-4 px-3'>
           <TabsTrigger value="login">Student Login</TabsTrigger>
           <TabsTrigger value="admin">Admin Login</TabsTrigger>

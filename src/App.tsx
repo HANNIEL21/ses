@@ -19,7 +19,6 @@ import Appraisal from "./Screens/dashboard/appraisal/Appraisal";
 import Faculties from "./Screens/dashboard/faculties/Faculties";
 import Departments from "./Screens/dashboard/departments/Departments";
 import Role from "./Screens/dashboard/role/Role";
-import Previlage from "./Screens/dashboard/previlage/Previlage";
 
 function App() {
 
@@ -49,7 +48,6 @@ function App() {
             <Route path="faculties" element={<Faculties/>} />
             <Route path="departments" element={<Departments/>} />
             <Route path="roles" element={<Role/>} />
-            <Route path="previlage" element={<Previlage/>} />
           </Route>
         </Routes>
       </Router>

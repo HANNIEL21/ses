@@ -2,6 +2,8 @@ import Mood from "@/components/Mood"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { DataTable } from "./data-table"
+import { columns, data } from "./columns"
 
 
 const Role = () => {
@@ -30,6 +32,11 @@ const Role = () => {
         </div>
         <Mood />
       </header>
+      <main className="px-4">
+        <div className="container mx-auto">
+          <DataTable columns={columns} data={data} />
+        </div>
+      </main>
     </div>
   )
 }
