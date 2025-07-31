@@ -29,17 +29,22 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useDispatch, useSelector } from "react-redux"
+import type { RootState } from "@/store/store"
+import { logout } from "@/store/features/auth/AuthSlice"
+import { useNavigate } from "react-router-dom"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+export function NavUser() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
   const { isMobile } = useSidebar()
+  const { user } = useSelector((state: RootState) => state.auth)
+
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate("/") 
+  }
+
 
   return (
     <SidebarMenu>
@@ -52,10 +57,10 @@ export function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg uppercase">{user.firstname.charAt(0) + user.lastname.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{user.firstname} {user.lastname}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -102,7 +107,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

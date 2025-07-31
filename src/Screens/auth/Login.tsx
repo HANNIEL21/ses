@@ -5,12 +5,15 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
-import { log } from 'console'
 import { Toast } from '@/components/Toast'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '@/store/store'
+import { loginSuccess } from '@/store/features/auth/AuthSlice'
 
 const Login = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleAdminLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,12 +36,10 @@ const Login = () => {
       console.log("Login successful:", response.data);
       Toast.fire({
         icon: 'success',
-        title: response.data.message,
+        title: response.data?.message,
       });
 
-
-      // Optionally store token or user info
-      // localStorage.setItem("token", response.data.token);
+      dispatch(loginSuccess({ user: response.data.user, token: response.data.token }))
 
       // Redirect to dashboard
       navigate("/dashboard");
