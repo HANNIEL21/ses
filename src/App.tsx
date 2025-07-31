@@ -12,7 +12,7 @@ import Overview from "./Screens/dashboard/overview/Overview";
 import Visitor from "./Screens/dashboard/visitors/Visitor";
 import Appraisals from "./Screens/dashboard/appraisals/Appraisals";
 import Admins from "./Screens/dashboard/admins/Admins";
-import Lecturers from "./Screens/dashboard/lecturers/Lecturers";
+import Lecturers from "./Screens/dashboard/Lecturers/Lecturers";
 import Analysis from "./Screens/dashboard/analysis/Analysis";
 import Report from "./Screens/dashboard/reports/Report";
 import Appraisal from "./Screens/dashboard/appraisal/Appraisal";
