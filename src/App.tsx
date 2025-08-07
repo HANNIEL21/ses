@@ -6,7 +6,8 @@ import Login from "./Screens/auth/Login";
 import ForgotPassword from "./Screens/auth/ForgotPassword";
 import ResetPassword from "./Screens/auth/ResetPassword";
 import VerifyEmail from "./Screens/auth/VerifyEmail";
-import User from "./Screens/user/User";
+import User from "./Screens/user/user/User";
+import LecturersList from "./Screens/user/lecturers/Lecturers";
 import Root from "./Screens/dashboard/Root";
 import Overview from "./Screens/dashboard/overview/Overview";
 import Visitor from "./Screens/dashboard/visitors/Visitor";
@@ -19,6 +20,7 @@ import Appraisal from "./Screens/dashboard/appraisal/Appraisal";
 import Faculties from "./Screens/dashboard/faculties/Faculties";
 import Departments from "./Screens/dashboard/departments/Departments";
 import Role from "./Screens/dashboard/role/Role";
+import UserRoot from "./Screens/user/UserRoot";
 
 function App() {
 
@@ -33,21 +35,24 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
 
 
-          <Route path="/user" element={<User />} />
+          <Route path="/user" element={<UserRoot />} >
+            <Route index element={<User />} />
+            <Route path="appraise" element={<LecturersList />} />
+          </Route>
 
 
           <Route path="/dashboard" element={<Root />} >
-            <Route index element={<Overview/>} />
-            <Route path="visitor" element={<Visitor/>} />
-            <Route path="appraisals" element={<Appraisals/>} />
-            <Route path="admins" element={<Admins/>} />
-            <Route path="lecturers" element={<Lecturers/>} />
-            <Route path="analysis" element={<Analysis/>} />
-            <Route path="report" element={<Report/>} />
-            <Route path="appraisal" element={<Appraisal/>} />
-            <Route path="faculties" element={<Faculties/>} />
-            <Route path="departments" element={<Departments/>} />
-            <Route path="roles" element={<Role/>} />
+            <Route index element={<Overview />} />
+            <Route path="visitor" element={<Visitor />} />
+            <Route path="appraisals" element={<Appraisals />} />
+            <Route path="admins" element={<Admins />} />
+            <Route path="lecturers" element={<Lecturers />} />
+            <Route path="analysis" element={<Analysis />} />
+            <Route path="report" element={<Report />} />
+            <Route path="appraisal" element={<Appraisal />} />
+            <Route path="faculties" element={<Faculties />} />
+            <Route path="departments" element={<Departments />} />
+            <Route path="roles" element={<Role />} />
           </Route>
         </Routes>
       </Router>

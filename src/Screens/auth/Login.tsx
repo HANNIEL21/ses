@@ -30,7 +30,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        // withCredentials: true, // uncomment if using cookies
+        // withCredentials: true,
       });
 
       console.log("Login successful:", response.data);
@@ -60,10 +60,49 @@ const Login = () => {
     }
   };
 
+  const handleStudentLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const handleStudentLogin = () => {
+    const formData = new FormData(e.currentTarget);
+    const matno = formData.get("matno") as string;
 
-  }
+    try {
+      const response = await axios.post("http://localhost:8000/api/visitor", {
+        matno,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // withCredentials: true,
+      });
+
+      console.log("Login successful:", response.data);
+      Toast.fire({
+        icon: 'success',
+        title: response.data?.message,
+      });
+
+      dispatch(loginSuccess({ user: response.data.user, token: response.data.token }))
+
+      // Redirect to user interface
+      navigate("/user");
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Login failed:", error.response.data);
+        Toast.fire({
+          icon: 'error',
+          title: error.response.data.error,
+        })
+      } else {
+        console.error("Network error:", error.message);
+        Toast.fire({
+          icon: 'error',
+          title: "Network error",
+        })
+      }
+    }
+  };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4">
@@ -76,19 +115,21 @@ const Login = () => {
         {/* Login */}
         <TabsContent value="login">
           <Card>
-            <CardHeader>
-              <CardTitle>Student Login</CardTitle>
-              <CardDescription>Enter your matric number</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="mat-no">Mat Number</Label>
-                <Input id="mat-no" placeholder='De.xxxx/xxxx' autoFocus />
-              </div>
-            </CardContent>
-            <CardFooter className='flex justify-end'>
-              <Button onClick={() => navigate('/user')}>Login</Button>
-            </CardFooter>
+            <form onSubmit={handleStudentLogin}>
+              <CardHeader>
+                <CardTitle>Student Login</CardTitle>
+                <CardDescription>Enter your matric number</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="matno">Mat Number</Label>
+                  <Input id="matno" name='matno' placeholder='De.xxxx/xxxx' autoFocus />
+                </div>
+              </CardContent>
+              <CardFooter className='flex justify-end pt-5'>
+                <Button type='submit'>Login</Button>
+              </CardFooter>
+            </form>
           </Card>
         </TabsContent>
 
@@ -110,7 +151,7 @@ const Login = () => {
                   <Input id="password" type="password" name="password" placeholder='Enter Password' />
                 </div>
               </CardContent>
-              <CardFooter className='flex justify-between'>
+              <CardFooter className='flex justify-between pt-5'>
                 <a href="/forgot-password" className="text-sm underline-offset-4 hover:underline">Forgot your password?</a>
                 <Button type='submit'>Login</Button>
               </CardFooter>

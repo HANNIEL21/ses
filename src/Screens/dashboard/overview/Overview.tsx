@@ -2,11 +2,11 @@ import Mood from '@/components/Mood'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import type { RootState } from '@/store/store'
-import { useSelector } from 'react-redux'
 
 
 const Overview = () => {
+
+    
 
     return (
         <div>
@@ -40,7 +40,7 @@ const Overview = () => {
                     <div className="bg-muted/50 aspect-video rounded-xl" />
                 </div>
                 <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
-                
+
             </div>
         </div>
     )

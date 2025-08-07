@@ -7,6 +7,9 @@ import { columns, data } from "./columns"
 
 
 const Faculties = () => {
+
+
+  
   return (
     <div>
       <header className="flex h-16 shrink-0 items-center justify-between pr-4 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
