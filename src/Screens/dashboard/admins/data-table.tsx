@@ -21,7 +21,7 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import React from "react"
+import React, { useRef } from "react"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { UserPlus } from "lucide-react"
 import { Label } from "@/components/ui/label"
@@ -45,6 +45,8 @@ export function DataTable<TData extends { firstname?: string; lastname?: string;
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
     const [globalFilter, setGlobalFilter] = React.useState("")
+
+    const [open, setOpen] = React.useState(false);
 
     const [formData, setFormData] = React.useState({
         firstname: "",
@@ -98,6 +100,7 @@ export function DataTable<TData extends { firstname?: string; lastname?: string;
             const res = await axios.post(`${baseUrl}/users`, {
                 firstname: formData.firstname,
                 lastname: formData.lastname,
+                role: formData.role,
                 email: formData.email,
                 password: formData.password,
             }, {
@@ -111,6 +114,8 @@ export function DataTable<TData extends { firstname?: string; lastname?: string;
                 icon: 'success',
                 title: "Admin created successfully"
             });
+
+            setOpen(false);
         } catch (error) {
             console.error("Error creating user:", error);
             Toast.fire({
@@ -130,7 +135,7 @@ export function DataTable<TData extends { firstname?: string; lastname?: string;
                     className="max-w-sm"
                 />
 
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                         <Button variant="outline" className="bg-muted">
                             <UserPlus className="h-4 w-4" />
@@ -215,6 +220,7 @@ export function DataTable<TData extends { firstname?: string; lastname?: string;
                                 <DialogClose asChild>
                                     <Button variant="outline" type="button">Cancel</Button>
                                 </DialogClose>
+                                
                                 <Button type="submit">Add</Button>
                             </DialogFooter>
                         </form>

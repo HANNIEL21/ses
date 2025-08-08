@@ -27,6 +27,10 @@ import React from "react"
 import { SquarePlus } from "lucide-react"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { Toast } from "@/components/Toast"
+import axios from "axios"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/store/store"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -44,6 +48,15 @@ export function DataTable<TData, TValue>({
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
+
+    const [open, setOpen] = React.useState(false);
+    const [formData, setFormData] = React.useState({
+        faculty: "",
+    });
+
+    const { token } = useSelector((state: RootState) => state.auth)
+    const baseUrl = import.meta.env.VITE_BASE_URI;
+
     const table = useReactTable({
         data,
         columns,
@@ -63,51 +76,89 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    const formSubmit = async (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+
+        if (formData.faculty == '') {
+            Toast.fire({
+                icon: 'error',
+                title: "Please fill the field"
+            })
+            return;
+        }
+
+        try {
+            const res = await axios.post(`${baseUrl}/faculties`, {
+                faculty: formData.faculty,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            console.log("Faculty added:", res.data);
+            Toast.fire({
+                icon: 'success',
+                title: "Faculty created successfully"
+            });
+            setOpen(false);
+        } catch (error) {
+            console.error("Error creating faculty:", error);
+            Toast.fire({
+                icon: 'error',
+                title: "Something went wrong"
+            });
+        }
+    };
+
+
     return (
         <div className="w-full">
             <div className="flex items-center justify-between gap-4 py-4">
                 <Input
-                    placeholder="Filter departments..."
-                    value={(table.getColumn("department")?.getFilterValue() as string) ?? ""}
+                    placeholder="Search Faculties..."
+                    value={(table.getColumn("faculty")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("department")?.setFilterValue(event.target.value)
+                        table.getColumn("faculty")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
 
-                <Dialog>
-                    <form>
-                        <DialogTrigger asChild>
-                            <Button variant="outline">Add <SquarePlus /></Button>
-                        </DialogTrigger>
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger asChild>
+                        <Button variant="outline">Add <SquarePlus /></Button>
+                    </DialogTrigger>
 
-                        <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                                <DialogTitle>Add Faculty</DialogTitle>
-                                <DialogDescription>
-                                    Fill in the department faculty. Click "Save" when you're done.
-                                </DialogDescription>
-                            </DialogHeader>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Add Faculty</DialogTitle>
+                            <DialogDescription>
+                                Fill in the department faculty. Click "Save" when you're done.
+                            </DialogDescription>
+                        </DialogHeader>
 
+
+                        <form onSubmit={formSubmit}>
                             <div className="grid gap-4">
                                 <div className="grid gap-3">
                                     <Label htmlFor="faculty">Faculty</Label>
                                     <Input
                                         id="faculty"
                                         name="faculty"
+                                        onChange={(e) => setFormData({ ...formData, faculty: e.target.value })}
                                         placeholder="e.g. Faculty of Sciences"
                                     />
                                 </div>
                             </div>
 
-                            <DialogFooter>
+                            <DialogFooter className="pt-5">
                                 <DialogClose asChild>
                                     <Button variant="outline">Cancel</Button>
                                 </DialogClose>
-                                <Button type="submit">Save Faculty</Button>
+                                <Button type="submit">Save</Button>
                             </DialogFooter>
-                        </DialogContent>
-                    </form>
+                        </form>
+                    </DialogContent>
                 </Dialog>
 
             </div>

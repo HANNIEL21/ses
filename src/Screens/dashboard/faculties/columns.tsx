@@ -4,45 +4,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 
-export type Department = {
+export type Faculty = {
     id: string
-    department: number
     faculty: string
+    department_count: string
 }
 
-export const data: Department[] = [
-    {
-        id: "agri01",
-        department: 12,
-        faculty: "Faculty of Agriculture",
-    },
-    {
-        id: "eng01",
-        department: 8,
-        faculty: "Faculty of Engineering",
-    },
-    {
-        id: "sci01",
-        department: 5,
-        faculty: "Faculty of Sciences",
-    },
-    {
-        id: "law01",
-        department: 3,
-        faculty: "Faculty of Law",
-    },
-    {
-        id: "hum01",
-        department: 7,
-        faculty: "Faculty of Humanities",
-    },
-]
-
-
-
-
-
-export const columns: ColumnDef<Department>[] = [
+export const columns: ColumnDef<Faculty>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -75,7 +43,7 @@ export const columns: ColumnDef<Department>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     className="font-bold"
                 >
-                    Faculties
+                    Faculty
                     <ArrowUpDown />
                 </Button>
             )
@@ -83,9 +51,9 @@ export const columns: ColumnDef<Department>[] = [
         cell: ({ row }) => <div className="capitalize">{row.getValue("faculty")}</div>,
     },
     {
-        accessorKey: "department",
+        accessorKey: "department_count",
         header: () => <div className="text-left font-bold">Departments</div>,
-        cell: ({ row }) => <div className="lowercase">{row.getValue("department")}</div>,
+        cell: ({ row }) => <div className="lowercase">{row.getValue("department_count")}</div>,
     },
 
     {

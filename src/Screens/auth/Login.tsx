@@ -15,6 +15,8 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>()
 
+  const baseUrl = import.meta.env.VITE_BASE_URI;
+
   const handleAdminLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -23,7 +25,7 @@ const Login = () => {
     const password = formData.get("password") as string;
 
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
+      const response = await axios.post(`${baseUrl}/login`, {
         email,
         password,
       }, {
@@ -67,7 +69,7 @@ const Login = () => {
     const matno = formData.get("matno") as string;
 
     try {
-      const response = await axios.post("http://localhost:8000/api/visitor", {
+      const response = await axios.post(`${baseUrl}/visitor`, {
         matno,
       }, {
         headers: {
