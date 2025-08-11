@@ -21,6 +21,7 @@ import Faculties from "./Screens/dashboard/faculties/Faculties";
 import Departments from "./Screens/dashboard/departments/Departments";
 import Role from "./Screens/dashboard/role/Role";
 import UserRoot from "./Screens/user/UserRoot";
+import ApprasalForm from "./Screens/user/appraisal/ApprasalForm";
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/user" element={<UserRoot />} >
             <Route index element={<User />} />
             <Route path="appraise" element={<LecturersList />} />
+            <Route path="appraise/:id" element={<ApprasalForm />} />
           </Route>
 
 

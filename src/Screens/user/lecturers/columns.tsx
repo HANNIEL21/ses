@@ -1,22 +1,25 @@
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
+import { setLecturer } from "@/store/features/lecturer/LecturerSlice"
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, Pointer } from "lucide-react"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 // Updated Visitor type
 export type Lecturer = {
-    id: string
-    name: string
-    faculty: string 
-    department: string
+  id: string
+  name: string
+  faculty: string
+  department: string
 }
 
 // Sample login data
@@ -124,25 +127,20 @@ export const columns: ColumnDef<Lecturer>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const lecturer = row.original
+      const lecturer = row.original;
+      const navigate = useNavigate();
+      const dispatch = useDispatch();
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(lecturer.id)}>
-              Copy Lecturer ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View Profile</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
+        <Button
+          onClick={() => {
+            dispatch(setLecturer(lecturer));
+            navigate(`/user/appraise/${lecturer.id}`);
+          }}
+        >
+          <Pointer />
+        </Button>
+      );
     },
-  },
+  }
 ]

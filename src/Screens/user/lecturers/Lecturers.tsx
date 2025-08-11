@@ -6,7 +6,7 @@ import { columns, data } from './columns'
 
 const LecturersList = () => {
     return (
-        <main>
+        <main className='px-6 py-10'>
             <div>
                 <Button variant="outline" size="icon"> <ChevronLeft /> </Button>
                 
