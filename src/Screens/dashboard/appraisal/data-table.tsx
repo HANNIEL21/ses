@@ -21,9 +21,18 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import React, { useRef } from "react"
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { UserPlus } from "lucide-react"
+import React from "react"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { FilePlus, Plus, X } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import axios from "axios"
 import { useSelector } from "react-redux"
@@ -36,7 +45,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export function DataTable<TData extends { name?: string }, TValue>({
+export function DataTable<TData extends { title?: string }, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
@@ -46,15 +55,16 @@ export function DataTable<TData extends { name?: string }, TValue>({
     const [rowSelection, setRowSelection] = React.useState({})
     const [globalFilter, setGlobalFilter] = React.useState("")
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false)
 
     const [formData, setFormData] = React.useState({
         name: "",
         status: "draft",
-    });
+        criteria: [{ id: Date.now(), value: "" }],
+    })
 
     const { token } = useSelector((state: RootState) => state.auth)
-    const baseUrl = import.meta.env.VITE_BASE_URI;
+    const baseUrl = import.meta.env.VITE_BASE_URI
 
     const table = useReactTable({
         data,
@@ -70,7 +80,7 @@ export function DataTable<TData extends { name?: string }, TValue>({
         onRowSelectionChange: setRowSelection,
         onGlobalFilterChange: setGlobalFilter,
         globalFilterFn: (row, _columnId, filterValue) => {
-            const name = row.original.name?.toLowerCase() ?? ""
+            const name = row.original.title?.toLowerCase() ?? ""
             return name.includes(filterValue.toLowerCase())
         },
         getCoreRowModel: getCoreRowModel(),
@@ -79,65 +89,103 @@ export function DataTable<TData extends { name?: string }, TValue>({
         getSortedRowModel: getSortedRowModel(),
     })
 
-    const formSubmit = async (e: { preventDefault: () => void }) => {
-        e.preventDefault();
+    // Add new criteria
+    const addCriteria = () => {
+        setFormData({
+            ...formData,
+            criteria: [...formData.criteria, { id: Date.now(), value: "" }],
+        })
+    }
 
-        if (formData.name == "") {
+    // Remove criteria by id
+    const removeCriteria = (id: number) => {
+        setFormData({
+            ...formData,
+            criteria: formData.criteria.filter((c) => c.id !== id),
+        })
+    }
+
+    // Update criteria
+    const updateCriteria = (id: number, value: string) => {
+        setFormData({
+            ...formData,
+            criteria: formData.criteria.map((c) =>
+                c.id === id ? { ...c, value } : c
+            ),
+        })
+    }
+
+    const formSubmit = async (e: { preventDefault: () => void }) => {
+        e.preventDefault()
+
+        if (formData.name.trim() === "") {
             Toast.fire({
-                icon: 'error',
-                title: "Name field is empty "
+                icon: "error",
+                title: "Name field is empty ",
             })
-            return;
+            return
         }
 
         try {
-            const res = await axios.post(`${baseUrl}/users`, {
-                name: formData.name,
-                status: formData.status,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+            const res = await axios.post(
+                `${baseUrl}/users`,
+                {
+                    name: formData.name,
+                    status: formData.status,
+                    criteria: formData.criteria.map((c) => c.value),
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            )
 
-            console.log("Appraisal added:", res.data);
+            console.log("Appraisal added:", res.data)
             Toast.fire({
-                icon: 'success',
-                title: "Appraisal created successfully"
-            });
+                icon: "success",
+                title: "Appraisal created successfully",
+            })
 
-            setOpen(false);
+            setFormData({
+                name: "",
+                status: "draft",
+                criteria: [{ id: Date.now(), value: "" }],
+            })
+            setOpen(false)
         } catch (error) {
-            console.error("Error creating user:", error);
+            console.error("Error creating appraisal:", error)
             Toast.fire({
-                icon: 'error',
-                title: "Something went wrong"
-            });
+                icon: "error",
+                title: "Something went wrong",
+            })
         }
-    };
+    }
 
     return (
         <div className="w-full">
             <div className="flex items-center justify-between gap-4 py-4">
                 <Input
-                    placeholder="Search name..."
+                    placeholder="Search title..."
                     value={table.getState().globalFilter ?? ""}
-                    onChange={(event) => table.setGlobalFilter(event.target.value)}
+                    onChange={(event) =>
+                        table.setGlobalFilter(event.target.value)
+                    }
                     className="max-w-sm"
                 />
 
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                         <Button variant="outline" className="bg-muted">
-                            <UserPlus className="h-4 w-4" />
+                            <FilePlus className="h-4 w-4" /> New Appraisal
                         </Button>
                     </DialogTrigger>
 
-                    <DialogContent className="sm:max-w-[425px]">
+                    <DialogContent className="sm:max-w-[500px]">
                         <DialogHeader>
                             <DialogTitle>Create Appraisal</DialogTitle>
                             <DialogDescription>
-                                Fill in user details. Click "Add" when done.
+                                Fill in appraisal details. Click "Add" when done.
                             </DialogDescription>
                         </DialogHeader>
 
@@ -149,26 +197,78 @@ export function DataTable<TData extends { name?: string }, TValue>({
                                         id="name"
                                         name="name"
                                         value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                name: e.target.value,
+                                            })
+                                        }
                                         placeholder="Enter Appraisal Name"
                                         required
                                     />
                                 </div>
 
-                                
+                                {/* Criteria fields */}
+                                <div className="grid gap-2">
+                                    <Label>Criteria</Label>
+                                    {formData.criteria.map((c, index) => (
+                                        <div
+                                            key={c.id}
+                                            className="flex gap-2 items-center"
+                                        >
+                                            <Input
+                                                value={c.value}
+                                                onChange={(e) =>
+                                                    updateCriteria(
+                                                        c.id,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder={`Criteria ${index + 1
+                                                    }`}
+                                                required
+                                            />
+
+                                            {/* Plus button */}
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="icon"
+                                                onClick={addCriteria}
+                                            >
+                                                <Plus className="h-4 w-4" />
+                                            </Button>
+
+                                            {/* Remove button (only show if > 1) */}
+                                            {formData.criteria.length > 1 && (
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() =>
+                                                        removeCriteria(c.id)
+                                                    }
+                                                >
+                                                    <X className="h-4 w-4 text-red-500" />
+                                                </Button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
                             <DialogFooter>
                                 <DialogClose asChild>
-                                    <Button variant="outline" type="button">Cancel</Button>
+                                    <Button variant="outline" type="button">
+                                        Cancel
+                                    </Button>
                                 </DialogClose>
-                                
+
                                 <Button type="submit">Add</Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>
                 </Dialog>
-
             </div>
 
             <div className="rounded-md border">
@@ -194,7 +294,9 @@ export function DataTable<TData extends { name?: string }, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -208,7 +310,10 @@ export function DataTable<TData extends { name?: string }, TValue>({
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
                                     No results.
                                 </TableCell>
                             </TableRow>

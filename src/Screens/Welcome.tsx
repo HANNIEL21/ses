@@ -1,12 +1,24 @@
 import Mood from "@/components/Mood"
 import { Button } from "@/components/ui/button"
+import axios from "axios"
 import { LogIn } from "lucide-react"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 
 const Welcome = () => {
 
     const navigate = useNavigate()
+    const baseUrl = import.meta.env.VITE_BASE_URI;
+
+    useEffect(() => {
+        const init = async () => {
+            const res = await axios.get(`${baseUrl}/`);
+            console.log(res.data);
+        }
+
+        init()
+    }, [])
 
     return (
         <div className="w-screen h-screen overflow-hidden flex flex-col">

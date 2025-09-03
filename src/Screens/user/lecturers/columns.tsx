@@ -1,16 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
+
 import { setLecturer } from "@/store/features/lecturer/LecturerSlice"
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal, Pointer } from "lucide-react"
+import { ArrowUpDown, Pointer } from "lucide-react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 

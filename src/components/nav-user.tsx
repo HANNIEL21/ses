@@ -31,30 +31,40 @@ import {
 } from "@/components/ui/sidebar"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "@/store/store"
-import { logout } from "@/store/features/auth/AuthSlice"
-import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { Toast } from "./Toast"
+import { logout } from "@/store/features/auth/AuthSlice"
 
 export function NavUser() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
+
   const { isMobile } = useSidebar()
-  const { user } = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch()
+  const { user, token } = useSelector((state: RootState) => state.auth)
+  const baseUrl = import.meta.env.VITE_BASE_URI;
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/api/logout", {}, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${baseUrl}/api/logout`,
+        {}, // empty body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
 
       Toast.fire({
         icon: 'success',
         title: res.data.message,
       });
 
-      // Redirect to login or home
-    } catch (error:any) {
+      dispatch(
+        logout()
+      );
+
+    } catch (error: any) {
       console.error(error);
       Toast.fire({
         icon: 'error',

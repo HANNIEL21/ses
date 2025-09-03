@@ -5,7 +5,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { DataTable } from "./data-table"
 import { columns, type User } from "./columns"
 import React from "react"
-import axios from "axios"
 import { useSelector } from "react-redux"
 import { BlinkBlur } from "react-loading-indicators"
 import type { RootState } from "@/store/store"
@@ -21,31 +20,62 @@ const Admins = () => {
   const baseUrl = import.meta.env.VITE_BASE_URI;
 
   React.useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
+    setLoading(true);
+
+    const eventSource = new EventSource(`${baseUrl}/stream/users?token=${token}`);
+
+    // Handle initUsers (all users at once)
+    eventSource.addEventListener("initUsers", (event) => {
       try {
-        const res = await axios.get(`${baseUrl}/users`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        setData(res.data);
-        setError(null);
-      } catch (error: any) {
-        if (error.response?.status === 401) {
-          setError("Unauthorized. Please log in again.");
-        } else {
-          setError("Failed to fetch users.");
-        }
-      } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 3000);
+        const users = JSON.parse(event.data) as User[];
+
+        console.log("initUsers:", users);
+
+        // filter out lecturers
+        const filtered = users.filter((u) => u.role !== "LECTURER");
+
+        setData(filtered);
+      } catch (err) {
+        console.error("Error parsing initUsers:", err);
       }
+    });
+
+    // Handle userUpdate (new user one by one)
+    eventSource.addEventListener("userUpdate", (event) => {
+      try {
+        const newUser = JSON.parse(event.data) as User;
+
+        console.log("userUpdate:", newUser);
+
+        if (newUser.role === "LECTURER") return; // skip lecturers
+
+        setData((prev) => {
+          const exists = prev.find((u) => u.id === newUser.id);
+          if (exists) {
+            return prev.map((u) => (u.id === newUser.id ? newUser : u));
+          }
+          return [...prev, newUser];
+        });
+      } catch (err) {
+        console.error("Error parsing userUpdate:", err);
+      }
+    });
+
+    eventSource.onerror = () => {
+      setError("Connection lost. Retrying…");
+      eventSource.close();
     };
 
-    fetchUsers();
-  }, [token]);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => {
+      eventSource.close();
+    };
+  }, [token, baseUrl]);
+
+
 
 
   if (loading) return <div className="h-[100vh] flex items-center justify-center text-center p-4 text-muted-foreground">

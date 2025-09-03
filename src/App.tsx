@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./components/theme-provider";
+import { useSelector } from "react-redux";
+import type { RootState } from "./store/store";
 
 import Welcome from "./Screens/Welcome";
 import Login from "./Screens/auth/Login";
@@ -11,7 +13,7 @@ import LecturersList from "./Screens/user/lecturers/Lecturers";
 import Root from "./Screens/dashboard/Root";
 import Overview from "./Screens/dashboard/overview/Overview";
 import Visitor from "./Screens/dashboard/visitors/Visitor";
-import Appraisals from "./Screens/dashboard/appraisals/Appraisals";
+import AppraisalScreen from "./Screens/dashboard/appraisals/Appraisals";
 import Admins from "./Screens/dashboard/admins/Admins";
 import Lecturers from "./Screens/dashboard/Lecturers/Lecturers";
 import Analysis from "./Screens/dashboard/analysis/Analysis";
@@ -22,31 +24,38 @@ import Departments from "./Screens/dashboard/departments/Departments";
 import Role from "./Screens/dashboard/role/Role";
 import UserRoot from "./Screens/user/UserRoot";
 import ApprasalForm from "./Screens/user/appraisal/ApprasalForm";
+import Register from "./Screens/auth/Register";
 
 function App() {
+  const { user, token } = useSelector((state: RootState) => state.auth);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Welcome />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
 
-
-          <Route path="/user" element={<UserRoot />} >
+          {/* User routes */}
+          <Route path="/user" element={<UserRoot />}>
             <Route index element={<User />} />
             <Route path="appraise" element={<LecturersList />} />
             <Route path="appraise/:id" element={<ApprasalForm />} />
           </Route>
 
-
-          <Route path="/dashboard" element={<Root />} >
+          {/* Protected dashboard routes */}
+          <Route
+            path="/dashboard"
+            element={user && token ? <Root /> : <Navigate to="/login" replace />}
+          >
             <Route index element={<Overview />} />
             <Route path="visitor" element={<Visitor />} />
-            <Route path="appraisals" element={<Appraisals />} />
+            <Route path="appraisals" element={<AppraisalScreen />} />
             <Route path="admins" element={<Admins />} />
             <Route path="lecturers" element={<Lecturers />} />
             <Route path="analysis" element={<Analysis />} />
@@ -59,7 +68,7 @@ function App() {
         </Routes>
       </Router>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

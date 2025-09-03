@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { DataTable } from "./data-table"
-import { columns, data,  } from "./columns"
+import { columns, data } from "./columns"
 
 
 const Departments =  () => {
