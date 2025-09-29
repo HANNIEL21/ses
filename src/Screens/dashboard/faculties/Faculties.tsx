@@ -21,7 +21,7 @@ const Faculties = () => {
   const [error, setError] = React.useState<string | null>(null)
 
   React.useEffect(() => {
-    const fetchUsers = async () => {
+    const fetch = async () => {
       setLoading(true);
       try {
         const res = await axios.get(`${baseUrl}/api/faculties`, {
@@ -47,7 +47,7 @@ const Faculties = () => {
       }
     };
 
-    fetchUsers();
+    fetch();
   }, [token]);
 
 

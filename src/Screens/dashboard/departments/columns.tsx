@@ -8,44 +8,8 @@ export type Department = {
     id: string
     department: string
     faculty: string
-    lecturer: number
+    lecturer_count: number
 }
-
-export const data: Department[] = [
-    {
-        id: "agri01",
-        lecturer: 12,
-        department: "Animal Science",
-        faculty: "Faculty of Agriculture",
-    },
-    {
-        id: "eng01",
-        lecturer: 8,
-        department: "Civil Engineering",
-        faculty: "Faculty of Engineering",
-    },
-    {
-        id: "sci01",
-        lecturer: 5,
-        department: "Computer Science",
-        faculty: "Faculty of Sciences",
-    },
-    {
-        id: "law01",
-        lecturer: 3,
-        department: "Public Law",
-        faculty: "Faculty of Law",
-    },
-    {
-        id: "hum01",
-        lecturer: 7,
-        department: "English and Literary Studies",
-        faculty: "Faculty of Humanities",
-    },
-]
-
-
-
 
 
 export const columns: ColumnDef<Department>[] = [
@@ -104,9 +68,9 @@ export const columns: ColumnDef<Department>[] = [
         cell: ({ row }) => <div className="capitalize">{row.getValue("faculty")}</div>,
     },
     {
-        accessorKey: "lecturer",
+        accessorKey: "lecturer_count",
         header: () => <div className="text-left font-bold">Lecturer</div>,
-        cell: ({ row }) => <div className="lowercase">{row.getValue("lecturer")}</div>,
+        cell: ({ row }) => <div className="lowercase">{row.getValue("lecturer_count")}</div>,
     },
 
     {

@@ -3,10 +3,61 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { DataTable } from "./data-table"
-import { columns, data } from "./columns"
+import { columns, type Department } from "./columns"
+import { BlinkBlur } from "react-loading-indicators"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/store/store"
+import React from "react"
+import axios from "axios"
 
 
-const Departments =  () => {
+const Departments = () => {
+
+  const { token } = useSelector((state: RootState) => state.auth)
+  const baseUrl = import.meta.env.VITE_BASE_URI;
+
+  const [data, setData] = React.useState<Department[]>([])
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get(`${baseUrl}/api/department`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        console.log(res);
+
+        setData(res.data);
+        setError(null);
+      } catch (error: any) {
+        if (error.response?.status === 401) {
+          setError("Unauthorized. Please log in again.");
+        } else {
+          setError("Failed to fetch departments.");
+        }
+      } finally {
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
+      }
+    };
+
+    fetchUsers();
+  }, [token]);
+
+
+  if (loading) return <div className="h-[100vh] flex items-center justify-center text-center p-4 text-muted-foreground">
+    <BlinkBlur color={["#ffffff", "#d3d3d3", "#808080", "#000000"]} />
+  </div>
+
+  if (error) return <div className="h-[100vh] flex items-center justify-center text-center p-4 text-muted-foreground">
+    <div className="text-center p-4 text-destructive font-bold">{error}</div>
+  </div>
 
   return (
     <div>
