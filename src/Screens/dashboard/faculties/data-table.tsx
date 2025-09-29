@@ -88,7 +88,7 @@ export function DataTable<TData, TValue>({
         }
 
         try {
-            const res = await axios.post(`${baseUrl}/faculties`, {
+            const res = await axios.post(`${baseUrl}/api/faculties`, {
                 faculty: formData.faculty,
             }, {
                 headers: {

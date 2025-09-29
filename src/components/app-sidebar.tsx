@@ -95,10 +95,6 @@ const data = {
           title: "Departments",
           url: "/dashboard/departments",
         },
-        {
-          title: "Roles",
-          url: "/dashboard/roles",
-        },
       ],
     },
   ],

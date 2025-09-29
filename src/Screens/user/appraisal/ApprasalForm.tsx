@@ -71,20 +71,26 @@ const ApprasalForm = () => {
 
             <Card>
                 <CardContent className="space-y-2 overflow-x-auto px-10">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 py-8">
+                        {/* Criteria title */}
                         <div className="w-full md:w-1/4">
                             <h2 className="font-extrabold text-lg md:text-xl">Criteria</h2>
                         </div>
-                        <div className="w-full md:w-2/4">
-                            <div className="flex justify-between font-extrabold">
-                                <p>1</p>
-                                <p>2</p>
-                                <p>3</p>
-                                <p>4</p>
-                                <p>5</p>
+
+                        {/* Rotated labels */}
+                        <div className="w-full md:w-2/4 flex items-end justify-center bg-indigo-400">
+                            <div className="flex justify-between items-end font-extrabold bg-amber-200 w-full min-h-[120px]">
+                                {activities[0]?.options.map((point) => (
+                                    <div key={point} className="flex justify-center">
+                                        <p className="transform -rotate-90 text-xs md:text-sm whitespace-nowrap origin-bottom">
+                                            {point}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
+
 
                     {activities.map((activity) => (
                         <div

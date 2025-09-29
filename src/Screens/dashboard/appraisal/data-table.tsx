@@ -128,7 +128,7 @@ export function DataTable<TData extends { title?: string }, TValue>({
 
         try {
             const res = await axios.post(
-                `${baseUrl}/users`,
+                `${baseUrl}/api/appraisal`,
                 {
                     name: formData.name,
                     status: formData.status,

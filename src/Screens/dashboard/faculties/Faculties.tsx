@@ -24,21 +24,21 @@ const Faculties = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`${baseUrl}/faculties`, {
+        const res = await axios.get(`${baseUrl}/api/faculties`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
         console.log(res);
-        
+
         setData(res.data);
         setError(null);
       } catch (error: any) {
         if (error.response?.status === 401) {
           setError("Unauthorized. Please log in again.");
         } else {
-          setError("Failed to fetch users.");
+          setError("Failed to fetch faculties.");
         }
       } finally {
         setTimeout(() => {
@@ -54,7 +54,11 @@ const Faculties = () => {
   if (loading) return <div className="h-[100vh] flex items-center justify-center text-center p-4 text-muted-foreground">
     <BlinkBlur color={["#ffffff", "#d3d3d3", "#808080", "#000000"]} />
   </div>
-  if (error) return <div className="text-center p-4 text-destructive">{error}</div>
+
+  if (error) return <div className="h-[100vh] flex items-center justify-center text-center p-4 text-muted-foreground">
+
+    <div className="text-center p-4 text-destructive font-bold">{error}</div>
+  </div>
 
 
   return (
